@@ -229,6 +229,7 @@ public final class FabricLoaderImpl extends net.fabricmc.loader.FabricLoader {
 		modCandidates = ModResolver.resolve(modCandidates, getEnvironmentType(), envDisabledMods);
 
 		dumpModList(modCandidates);
+		dumpNonFabricMods(discoverer.getNonFabricMods());
 
 		Path cacheDir = gameDir.resolve(CACHE_DIR_NAME);
 		Path outputdir = cacheDir.resolve(PROCESSED_MODS_DIR_NAME);
@@ -282,7 +283,16 @@ public final class FabricLoaderImpl extends net.fabricmc.loader.FabricLoader {
 		modCandidates = null;
 	}
 
-	private void dumpNonFabricMods(List<Path> nonFabricMods) { }
+	private void dumpNonFabricMods(List<Path> nonFabricMods) {
+		StringBuilder outputText = new StringBuilder();
+
+		for (Path nonFabricMod : nonFabricMods) {
+			outputText.append("\t- ").append(nonFabricMod.getFileName());
+		}
+
+		int modsCount = nonFabricMods.size();
+		Log.warn(LogCategory.GENERAL, "Found %d non-fabric mod%s:%n%s", modsCount, modsCount != 1 ? "s" : "", outputText);
+	}
 
 	private void dumpModList(List<ModCandidate> mods) {
 		StringBuilder modListText = new StringBuilder();
