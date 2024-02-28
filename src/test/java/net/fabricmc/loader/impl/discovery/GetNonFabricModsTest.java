@@ -3,6 +3,7 @@ package net.fabricmc.loader.impl.discovery;
 import net.fabricmc.loader.impl.FabricLoaderImpl;
 import net.fabricmc.loader.impl.game.GameProvider;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -37,7 +38,9 @@ public class GetNonFabricModsTest {
 	@Test
 	public void testGetNonFabricMods() throws ModResolutionException {
 		discoverer.discoverMods(loader, new HashMap<String, Set<ModCandidate>>());
-		Set<ModCandidate> nonFabricMods = discoverer.getNonFabricMods();
+		List<Path> nonFabricMods = discoverer.getNonFabricMods();
+		Assertions.assertEquals(1, nonFabricMods.size());
+		Assertions.assertEquals(Paths.get("./src/test/resources/testing.discovery/dummyNonFabricMod.jar"), nonFabricMods.get(0));
 	}
 
 	public static class MockCandidateFinder implements ModCandidateFinder {
