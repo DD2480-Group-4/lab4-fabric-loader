@@ -211,7 +211,7 @@ public final class ModDiscoverer {
 	}
 
 	public List<Path> getNonFabricMods() {
-		return nonFabricMods;
+		return Collections.unmodifiableList(nonFabricMods);
 	}
 
 	// retrieve set of disabled mod ids from system property
