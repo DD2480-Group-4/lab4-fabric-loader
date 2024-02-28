@@ -22,8 +22,9 @@ public class GetNonFabricModsTest {
 	private FabricLoaderImpl loader;
 	private ModDiscoverer discoverer;
 
-
-
+	/*
+	 * Set up the mock loader and discoverer
+	 */
 	@BeforeEach
 	public void setUp() {
 		GameProvider provider = mock();
@@ -35,6 +36,9 @@ public class GetNonFabricModsTest {
 		discoverer.addCandidateFinder(new MockCandidateFinder());
 	}
 
+	/*
+	 * Test that the discoverer can find non-fabric mods
+	 */
 	@Test
 	public void testGetNonFabricMods() throws ModResolutionException {
 		discoverer.discoverMods(loader, new HashMap<String, Set<ModCandidate>>());
@@ -43,6 +47,9 @@ public class GetNonFabricModsTest {
 		Assertions.assertEquals(Paths.get("./src/test/resources/testing.discovery/dummyNonFabricMod.jar"), nonFabricMods.get(0));
 	}
 
+	/*
+	 * Mock candidate finder that returns two dummy mods (one fabric and one non-fabric)
+	 */
 	public static class MockCandidateFinder implements ModCandidateFinder {
 		@Override
 		public void findCandidates(ModCandidateConsumer out) {
