@@ -282,9 +282,7 @@ public final class FabricLoaderImpl extends net.fabricmc.loader.FabricLoader {
 		modCandidates = null;
 	}
 
-	private void dumpNonFabricMods(List<Path> nonFabricMods) {
-
-	}
+	private void dumpNonFabricMods(List<Path> nonFabricMods) { }
 
 	private void dumpModList(List<ModCandidate> mods) {
 		StringBuilder modListText = new StringBuilder();

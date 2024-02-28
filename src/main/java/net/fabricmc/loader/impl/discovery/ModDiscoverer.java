@@ -299,6 +299,7 @@ public final class ModDiscoverer {
 
 		private ModCandidate computeDir(Path path) throws IOException, ParseMetadataException {
 			Path modJson = path.resolve("fabric.mod.json");
+
 			if (!Files.exists(modJson)) {
 				nonFabricMods.add(path);
 				return null;
@@ -316,6 +317,7 @@ public final class ModDiscoverer {
 		private ModCandidate computeJarFile(Path path) throws IOException, ParseMetadataException {
 			try (ZipFile zf = new ZipFile(path.toFile())) {
 				ZipEntry entry = zf.getEntry("fabric.mod.json");
+
 				if (entry == null) {
 					nonFabricMods.add(path);
 					return null;
