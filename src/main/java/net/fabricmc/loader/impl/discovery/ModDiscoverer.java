@@ -299,11 +299,7 @@ public final class ModDiscoverer {
 
 		private ModCandidate computeDir(Path path) throws IOException, ParseMetadataException {
 			Path modJson = path.resolve("fabric.mod.json");
-
-			if (!Files.exists(modJson)) {
-				nonFabricMods.add(path);
-				return null;
-			}
+			if (!Files.exists(modJson)) return null;
 
 			LoaderModMetadata metadata;
 
