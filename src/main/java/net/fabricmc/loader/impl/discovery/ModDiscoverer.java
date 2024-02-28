@@ -209,7 +209,7 @@ public final class ModDiscoverer {
 		return new ArrayList<>(ret);
 	}
 
-	private List<Path> getNonFabricMods() {
+	public List<Path> getNonFabricMods() {
 		return new ArrayList<>();
 	}
 
