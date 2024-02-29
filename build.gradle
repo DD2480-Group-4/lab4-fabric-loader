@@ -18,7 +18,6 @@ plugins {
 	id 'fabric-loom' version '1.4-SNAPSHOT' apply false
 	id 'com.github.johnrengelman.shadow' version '8.1.1'
 	id 'me.modmuss50.remotesign' version "0.4.0"
-	id 'jacoco'
 }
 
 base {
@@ -30,7 +29,7 @@ def ENV = System.getenv()
 allprojects {
 	apply plugin: 'java-library'
 	apply plugin: 'eclipse'
-	//apply plugin: 'checkstyle'
+	apply plugin: 'checkstyle'
 	apply plugin: "com.diffplug.spotless"
 
 	def constantsSource = rootProject.file("src/main/java/net/fabricmc/loader/impl/FabricLoaderImpl.java").text
