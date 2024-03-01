@@ -285,10 +285,36 @@ public final class FabricLoaderImpl extends net.fabricmc.loader.FabricLoader {
 
 	// loaded mods are the subset of fabric mods.
 	private void dumpModsHavingProvider(List<ModCandidate> LoadedMods) {
-		// TODO: Finish the logic of logging mods with providers.
 		StringBuilder logText = new StringBuilder(); // List of mods having provider
 
-		int subLevelModsCount = 0;
+		List<ModCandidate> subLevelMods = LoadedMods.stream()
+				.filter(mod -> !mod.getParentMods().isEmpty())
+				.collect(Collectors.toList());
+
+		int subLevelModsCount = subLevelMods.size();
+		for (ModCandidate subLevelMod : subLevelMods) {
+			boolean hasParent = !subLevelMod.getParentMods().isEmpty();
+			ModCandidate parentMod = subLevelMod;
+			while (hasParent) {
+				List<ModCandidate> parentMods = new ArrayList<>(parentMod.getParentMods());
+				// Each nested mod has only one parent due to tree structure.
+				parentMod = parentMods.get(0);
+				// Update hasParent to see if parent has parent
+				hasParent = !parentMod.getParentMods().isEmpty();
+			}
+
+			if (logText.length() > 0) logText.append('\n');
+
+			logText.append("\t-");
+			logText.append(' ').append(subLevelMod.getId());
+			logText.append(' ').append(subLevelMod.getVersion().getFriendlyString());
+			logText.append(" (in ");
+			logText.append(' ').append(parentMod.getId());
+			logText.append(' ').append(parentMod.getVersion().getFriendlyString());
+			logText.append(')');
+
+		}
+
 		Log.info(LogCategory.GENERAL, "Found %d loaded mod%s that ha%s providers:%n%s",
 				subLevelModsCount,
 				subLevelModsCount != 1 ? "s" : "",
