@@ -14,7 +14,7 @@ plugins {
 	id 'eclipse'
 	id 'maven-publish'
 	id 'checkstyle'
-	id 'com.diffplug.spotless' version "5.13.0" // "6.22.0"
+	id 'com.diffplug.spotless' version "6.22.0"
 	id 'fabric-loom' version '1.4-SNAPSHOT' apply false
 	id 'com.github.johnrengelman.shadow' version '8.1.1'
 	id 'me.modmuss50.remotesign' version "0.4.0"
@@ -125,6 +125,9 @@ dependencies {
 	// Unit testing for mod metadata
 	testImplementation('org.junit.jupiter:junit-jupiter:5.9.2')
 	testRuntimeOnly('org.junit.platform:junit-platform-launcher')
+
+	// Unit testing for logging mod that have providers
+	testImplementation("org.mockito:mockito-core:5.10.0")
 }
 
 apply from: rootProject.file('gradle/installer-json.gradle')
@@ -145,7 +148,7 @@ java {
 }
 
 jar {
-	enabled = true
+	enabled = false
 	// Set the classifier to fix gradle task validation confusion.
 	archiveClassifier = "disabled"
 }
