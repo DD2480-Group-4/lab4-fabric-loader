@@ -229,6 +229,7 @@ public final class FabricLoaderImpl extends net.fabricmc.loader.FabricLoader {
 		modCandidates = ModResolver.resolve(modCandidates, getEnvironmentType(), envDisabledMods);
 
 		dumpModList(modCandidates);
+		dumpModsHavingProvider(modCandidates);
 
 		Path cacheDir = gameDir.resolve(CACHE_DIR_NAME);
 		Path outputdir = cacheDir.resolve(PROCESSED_MODS_DIR_NAME);
@@ -280,6 +281,19 @@ public final class FabricLoaderImpl extends net.fabricmc.loader.FabricLoader {
 		}
 
 		modCandidates = null;
+	}
+
+	// loaded mods are the subset of fabric mods.
+	private void dumpModsHavingProvider(List<ModCandidate> LoadedMods) {
+		// TODO: Finish the logic of logging mods with providers.
+		StringBuilder logText = new StringBuilder(); // List of mods having provider
+
+		int subLevelModsCount = 0;
+		Log.info(LogCategory.GENERAL, "Found %d loaded mod%s that ha%s providers:%n%s",
+				subLevelModsCount,
+				subLevelModsCount != 1 ? "s" : "",
+				subLevelModsCount != 1 ? "ve" : "s",
+				logText);
 	}
 
 	private void dumpModList(List<ModCandidate> mods) {
