@@ -33,6 +33,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 
+import com.google.common.annotations.VisibleForTesting;
+
 import net.fabricmc.loader.api.Version;
 import net.fabricmc.loader.api.metadata.ModDependency;
 import net.fabricmc.loader.impl.game.GameProvider.BuiltinMod;
@@ -82,6 +84,11 @@ public final class ModCandidate implements DomainObject.Mod {
 		if (entry.getSize() < 0 || entry.getCrc() < 0) throw new IllegalArgumentException("uninitialized entry: "+entry);
 
 		return entry.getCrc() << 32 | entry.getSize();
+	}
+
+	@VisibleForTesting
+	public static ModCandidate createTestData(List<Path> paths, String localPath, long hash, LoaderModMetadata metadata, boolean requiresRemap, Collection<ModCandidate> nestedMods) {
+		return new ModCandidate(paths, localPath, hash, metadata, requiresRemap, nestedMods);
 	}
 
 	private static long getSize(long hash) {
@@ -181,6 +188,11 @@ public final class ModCandidate implements DomainObject.Mod {
 		updateMinNestLevel(parent);
 
 		return true;
+	}
+
+	@VisibleForTesting
+	public void testAddParent(ModCandidate parent) {
+		addParent(parent);
 	}
 
 	public int getMinNestLevel() {

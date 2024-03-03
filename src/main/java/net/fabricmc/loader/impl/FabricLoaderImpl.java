@@ -35,6 +35,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import com.google.common.annotations.VisibleForTesting;
 import org.objectweb.asm.Opcodes;
 
 import net.fabricmc.accesswidener.AccessWidener;
@@ -229,6 +230,7 @@ public final class FabricLoaderImpl extends net.fabricmc.loader.FabricLoader {
 		modCandidates = ModResolver.resolve(modCandidates, getEnvironmentType(), envDisabledMods);
 
 		dumpModList(modCandidates);
+		dumpModsHavingProvider(modCandidates);
 
 		Path cacheDir = gameDir.resolve(CACHE_DIR_NAME);
 		Path outputdir = cacheDir.resolve(PROCESSED_MODS_DIR_NAME);
@@ -282,6 +284,46 @@ public final class FabricLoaderImpl extends net.fabricmc.loader.FabricLoader {
 		modCandidates = null;
 	}
 
+	// loaded mods are the subset of fabric mods.
+	@VisibleForTesting
+	public void dumpModsHavingProvider(List<ModCandidate> LoadedMods) {
+		StringBuilder logText = new StringBuilder(); // List of mods having provider
+
+		List<ModCandidate> subLevelMods = LoadedMods.stream()
+				.filter(mod -> !mod.getParentMods().isEmpty())
+				.collect(Collectors.toList());
+
+		int subLevelModsCount = subLevelMods.size();
+		for (ModCandidate subLevelMod : subLevelMods) {
+			boolean hasParent = !subLevelMod.getParentMods().isEmpty();
+			ModCandidate parentMod = subLevelMod;
+			while (hasParent) {
+				List<ModCandidate> parentMods = new ArrayList<>(parentMod.getParentMods());
+				// Each nested mod has only one parent due to tree structure.
+				parentMod = parentMods.get(0);
+				// Update hasParent to see if parent has parent
+				hasParent = !parentMod.getParentMods().isEmpty();
+			}
+
+			if (logText.length() > 0) logText.append(System.lineSeparator());
+
+			logText.append("\t-");
+			logText.append(' ').append(subLevelMod.getId());
+			logText.append(' ').append(subLevelMod.getVersion().getFriendlyString());
+			logText.append(" (in ");
+			logText.append(' ').append(parentMod.getId());
+			logText.append(' ').append(parentMod.getVersion().getFriendlyString());
+			logText.append(')');
+
+		}
+
+		Log.info(LogCategory.GENERAL, "Found %d loaded mod%s that ha%s providers:%n%s",
+				subLevelModsCount,
+				subLevelModsCount != 1 ? "s" : "",
+				subLevelModsCount != 1 ? "ve" : "s",
+				logText);
+	}
+
 	private void dumpModList(List<ModCandidate> mods) {
 		StringBuilder modListText = new StringBuilder();
 
@@ -304,7 +346,7 @@ public final class FabricLoaderImpl extends net.fabricmc.loader.FabricLoader {
 	}
 
 	private void dumpModList0(ModCandidate mod, StringBuilder log, int nestLevel, boolean[] lastItemOfNestLevel) {
-		if (log.length() > 0) log.append('\n');
+		if (log.length() > 0) log.append(System.lineSeparator());
 
 		for (int depth = 0; depth < nestLevel; depth++) {
 			log.append(depth == 0 ? "\t" : lastItemOfNestLevel[depth] ? "     " : "   | ");

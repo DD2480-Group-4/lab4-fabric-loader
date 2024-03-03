@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "id": "mod1",
+  "name": "Test Mod1",
+  "version": "0.1.0",
+  "entrypoints": {
+    "preLaunch": [
+      "net.fabricmc.test.TestMod"
+    ],
+    "main": [
+      "net.fabricmc.test.TestMod"
+    ],
+    "test:testing": [
+      "net.fabricmc.test.EntrypointTest::instanceEntry",
+      "net.fabricmc.test.EntrypointTest::staticEntry",
+      "net.fabricmc.test.EntrypointTest::FIELD_ENTRY"
+    ]
+  }
+}
