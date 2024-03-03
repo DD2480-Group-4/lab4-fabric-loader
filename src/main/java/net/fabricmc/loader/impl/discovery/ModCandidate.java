@@ -187,6 +187,10 @@ public final class ModCandidate implements DomainObject.Mod {
 		return true;
 	}
 
+	public void testAddParent(ModCandidate parent) {
+		addParent(parent);
+	}
+
 	public int getMinNestLevel() {
 		return minNestLevel;
 	}
