@@ -86,6 +86,7 @@ public final class ModCandidate implements DomainObject.Mod {
 		return entry.getCrc() << 32 | entry.getSize();
 	}
 
+	@VisibleForTesting
 	public static ModCandidate createTestData(List<Path> paths, String localPath, long hash, LoaderModMetadata metadata, boolean requiresRemap, Collection<ModCandidate> nestedMods) {
 		return new ModCandidate(paths, localPath, hash, metadata, requiresRemap, nestedMods);
 	}
