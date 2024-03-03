@@ -22,8 +22,6 @@ import static org.mockito.Mockito.mock;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -67,16 +65,6 @@ public class LogProvidedModsTest {
 			return ModMetadataParser.parseMetadata(is, "null", Collections.emptyList(),
 					new VersionOverrides(),
 					new DependencyOverrides(Paths.get("null")), false);
-		}
-	}
-	private static void dumpModsHavingProvider(List<ModCandidate> LoadedMods) {
-		try {
-			Method method = FabricLoaderImpl.class.getDeclaredMethod("dumpModsHavingProvider", List.class);
-			method.setAccessible(true);
-			method.invoke(FabricLoaderImpl.INSTANCE, LoadedMods);
-		} catch (NoSuchMethodException | IllegalArgumentException | IllegalAccessException
-				 | InvocationTargetException e) {
-			throw new RuntimeException(e);
 		}
 	}
 
@@ -141,7 +129,8 @@ public class LogProvidedModsTest {
             LoadedMods.add(testMode5);
         }
 
-		dumpModsHavingProvider(LoadedMods);
+		// Call as an INSTANCE rather than reflection
+		FabricLoaderImpl.INSTANCE.dumpModsHavingProvider(LoadedMods);
 
         String expectedLog = "Found 3 loaded mods that have providers:"
                 + System.lineSeparator() + "\t- mod1 0.1.0 (in  mod4 1.1.1)"

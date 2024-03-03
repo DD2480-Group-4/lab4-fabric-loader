@@ -35,6 +35,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import com.google.common.annotations.VisibleForTesting;
 import org.objectweb.asm.Opcodes;
 
 import net.fabricmc.accesswidener.AccessWidener;
@@ -284,7 +285,8 @@ public final class FabricLoaderImpl extends net.fabricmc.loader.FabricLoader {
 	}
 
 	// loaded mods are the subset of fabric mods.
-	private void dumpModsHavingProvider(List<ModCandidate> LoadedMods) {
+	@VisibleForTesting
+	public void dumpModsHavingProvider(List<ModCandidate> LoadedMods) {
 		StringBuilder logText = new StringBuilder(); // List of mods having provider
 
 		List<ModCandidate> subLevelMods = LoadedMods.stream()

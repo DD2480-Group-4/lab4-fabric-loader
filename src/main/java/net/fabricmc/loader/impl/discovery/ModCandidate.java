@@ -33,6 +33,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 
+import com.google.common.annotations.VisibleForTesting;
+
 import net.fabricmc.loader.api.Version;
 import net.fabricmc.loader.api.metadata.ModDependency;
 import net.fabricmc.loader.impl.game.GameProvider.BuiltinMod;
@@ -187,6 +189,7 @@ public final class ModCandidate implements DomainObject.Mod {
 		return true;
 	}
 
+	@VisibleForTesting
 	public void testAddParent(ModCandidate parent) {
 		addParent(parent);
 	}
