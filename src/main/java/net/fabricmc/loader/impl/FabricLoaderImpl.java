@@ -305,7 +305,7 @@ public final class FabricLoaderImpl extends net.fabricmc.loader.FabricLoader {
 				hasParent = !parentMod.getParentMods().isEmpty();
 			}
 
-			if (logText.length() > 0) logText.append('\n');
+			if (logText.length() > 0) logText.append(System.lineSeparator());
 
 			logText.append("\t-");
 			logText.append(' ').append(subLevelMod.getId());
@@ -346,7 +346,7 @@ public final class FabricLoaderImpl extends net.fabricmc.loader.FabricLoader {
 	}
 
 	private void dumpModList0(ModCandidate mod, StringBuilder log, int nestLevel, boolean[] lastItemOfNestLevel) {
-		if (log.length() > 0) log.append('\n');
+		if (log.length() > 0) log.append(System.lineSeparator());
 
 		for (int depth = 0; depth < nestLevel; depth++) {
 			log.append(depth == 0 ? "\t" : lastItemOfNestLevel[depth] ? "     " : "   | ");
